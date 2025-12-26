@@ -27,30 +27,43 @@ class Interpreter {
 		int pointer = 0;
 		int recursion_level = 0;
 		int current_character = 0;
+		int line_count = 0;
 		File myFile = new File(args[0]);
 
 		try(Scanner myReader = new Scanner(myFile)) {
 			myReader.skip(Pattern.compile("[\\>\\<\\+\\-\\.\\,\\[\\]]+"));
+			int char_count = 0;
 			while (myReader.hasNextLine()) {
-				String line = myReader.next();
+				String line = myReader.nextLine();
+				char_count = 0;
+				line_count++;
 				for(char c: line.toCharArray()){
 				// Do Stuff
-				byte current = memory.get(pointer);
+					byte current = memory.get(pointer);
+					char_count++;
 					switch (c) {
 						case '>': 
+							System.out.print(">");
 							pointer++;
 						case '<': 
-							pointer--;
+							System.out.print("<");
+							if(pointer > 1){
+								pointer--;
+							}
 						case '+':
+							System.out.print("+");
 							current = memory.get(pointer);
 							memory.set(pointer, current++);
 						case '-':
+							System.out.print("-");
 							current = memory.get(pointer);
 							memory.set(pointer, current--);
 						case '.':
+							System.out.print(".");
 							System.out.print(Byte.toString(current));
 						case ',':
 							System.out.print(",");
+							
 						case '[':
 							System.out.print("[");
 						case ']':
